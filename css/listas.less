@@ -1,0 +1,65 @@
+body {
+    padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+}
+
+@color-azul-claro: #4f87ef;
+@color-azul-escuro: #0e77c8;
+@color-vermelho-escuro: #F80000;
+
+.navbar .navbar-inner{
+    background-color: @color-azul-escuro;
+    background-image: none;
+}
+.navbar .nav .active > a, .navbar .nav .active > a:hover {
+    background-color: @color-azul-claro;
+}
+
+h1, h2, h3, h4, h5, legend{
+    color: @color-azul-escuro;
+}
+
+fieldset{
+    height: 400px;
+    width: 400px;
+}
+
+textarea{
+    height: 200px;
+    width: 350px;
+    resize: none;
+}
+
+#itens{
+    position: relative;
+    width: 100%;
+    li{
+        display: block;
+        min-width: 80%;
+    
+        .item-body{
+            min-width: 60%;
+        }
+        
+        .item-opcoes{
+            float: right;
+            min-width: 40%;
+        }
+    }
+    hr{
+        margin-top: 2px;
+        margin-bottom: 2px;
+        width: 60%;
+    }
+}
+
+.icon-edit{
+    background-color: @color-azul-escuro;
+}
+
+.icon-remove{
+    background-color: @color-vermelho-escuro;
+}
+
+.icon-chevron-right{
+    background-color: @color-azul-escuro;
+}

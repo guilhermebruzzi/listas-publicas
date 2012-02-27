@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <h1> {{ title }} </h1>
+
+    <br />
+
+    <div id="sublistas">
+        <h3>Sub-Listas:</h3><br />
+        {% for sublista in sublistas %}
+            <div class="row">
+                {% if (loop.index % 2) == 0 %}
+                    <li id="sublista{{ loop.index }}" class="par offset1 span6">
+                {% else %}
+                    <li id="sublista{{ loop.index }}" class="offset1 span6">
+                {% endif %}
+                        {{ sublista }}
+                    </li>
+            </div>
+        {% endfor %}
+    </div>
+    
+    <br />
+
+    <div id="itens">
+        <h3>Itens:</h3><br />
+        {% for item in itens %}
+            <div class="row">
+                {% if (loop.index % 2) == 0 %}
+                    <li id="item{{ loop.index }}" class="par offset1">
+                {% else %}
+                    <li id="item{{ loop.index }}" class="offset1">
+                {% endif %}
+                        <div id="item-opcoes{{ loop.index }}" class="item-opcoes">
+                            <a class="editar" href=""><i class="icon-edit icon-white"></i></a>
+                            &nbsp;/&nbsp;
+                            <a class="excluir" href=""><i class="icon-remove icon-white"></i></a>
+                        </div>
+                        <div class="item-body">
+                            <i class="icon-chevron-right icon-white"></i>
+                            &nbsp;
+                            <b>{{ item }}</b>
+                        </div>
+                    </li>
+            </div>
+            <hr class="offset1" />
+        {% endfor %}
+    </div>
+    
+    <br />
+    
+    <form method="post" action="" class=".form-vertical">
+        <h3>Adicione Itens:</h3><br />
+        <textarea name="itens" class="focused"></textarea><br />
+        <input type="submit" name="adiciona_itens" class="btn btn-primary" value="Adicionar" />
+    </form>
+
+
+</div>
+
+{% endblock %}
+
