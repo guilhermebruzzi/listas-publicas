@@ -6,6 +6,22 @@ body {
 @color-azul-escuro: #0e77c8;
 @color-vermelho-escuro: #F80000;
 
+/* Topo */
+.brand{
+    height: 20px;
+    #icone-principal{
+        //margin-top: 2px;
+        margin-right: 7px;
+        float: left;
+    }
+    #titulo-principal{
+        display: block;
+        width: 200px;
+        position: relative;
+        top: 2px;
+    }
+}
+
 .navbar .navbar-inner{
     background-color: @color-azul-escuro;
     background-image: none;
@@ -18,6 +34,8 @@ h1, h2, h3, h4, h5, legend{
     color: @color-azul-escuro;
 }
 
+/* Formulário */
+
 fieldset{
     height: 400px;
     width: 400px;
@@ -29,28 +47,11 @@ textarea{
     resize: none;
 }
 
-#itens{
-    position: relative;
-    width: 100%;
-    li{
-        display: block;
-        min-width: 80%;
-    
-        .item-body{
-            min-width: 60%;
-        }
-        
-        .item-opcoes{
-            float: right;
-            min-width: 40%;
-        }
-    }
-    hr{
-        margin-top: 2px;
-        margin-bottom: 2px;
-        width: 60%;
-    }
+#adiciona_itens{
+    margin-left: 135px;
 }
+
+/* Ícones usados */
 
 .icon-edit{
     background-color: @color-azul-escuro;
@@ -63,3 +64,42 @@ textarea{
 .icon-chevron-right{
     background-color: @color-azul-escuro;
 }
+
+/* Sub-Listas */
+
+#sublistas{
+    position: relative;
+    li{
+        display: block;
+    }
+    hr{
+        margin-top: 2px;
+        margin-bottom: 2px;
+    }
+}
+
+
+/* Itens */
+
+#itens{
+    position: relative;
+    
+    li{
+        display: block;
+    
+        .item-body{
+        }
+        
+        .item-opcoes{
+            float: right;
+            b{ /*Barra entre as opcões*/
+                color: @color-azul-escuro;
+            }
+        }
+    }
+    hr{
+        margin-top: 2px;
+        margin-bottom: 2px;
+    }
+}
+

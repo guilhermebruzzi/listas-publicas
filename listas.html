@@ -14,13 +14,18 @@
         {% for sublista in sublistas %}
             <div class="row">
                 {% if (loop.index % 2) == 0 %}
-                    <li id="sublista{{ loop.index }}" class="par offset1 span6">
+                    <li id="sublista{{ loop.index }}" class="par offset1 span8">
                 {% else %}
-                    <li id="sublista{{ loop.index }}" class="offset1 span6">
+                    <li id="sublista{{ loop.index }}" class="offset1 span8">
                 {% endif %}
-                        {{ sublista }}
+                        <div class="sublista-body span6">
+                            <i class="icon-chevron-right icon-white"></i>
+                            &nbsp;
+                            <b><a href="/listas-publicas/{{ sublista.slug }}">{{ sublista.nome }}</a></b>
+                        </div>
                     </li>
             </div>
+            <hr class="offset1 span5" />
         {% endfor %}
     </div>
     
@@ -31,23 +36,23 @@
         {% for item in itens %}
             <div class="row">
                 {% if (loop.index % 2) == 0 %}
-                    <li id="item{{ loop.index }}" class="par offset1">
+                    <li id="item{{ loop.index }}" class="par offset1 span8">
                 {% else %}
-                    <li id="item{{ loop.index }}" class="offset1">
+                    <li id="item{{ loop.index }}" class="offset1 span8">
                 {% endif %}
-                        <div id="item-opcoes{{ loop.index }}" class="item-opcoes">
+                        <div id="item-opcoes{{ loop.index }}" class="item-opcoes span2">
                             <a class="editar" href=""><i class="icon-edit icon-white"></i></a>
-                            &nbsp;/&nbsp;
+                            <b>&nbsp;/&nbsp;</b>
                             <a class="excluir" href=""><i class="icon-remove icon-white"></i></a>
                         </div>
-                        <div class="item-body">
+                        <div class="item-body span5">
                             <i class="icon-chevron-right icon-white"></i>
                             &nbsp;
-                            <b>{{ item }}</b>
+                            <b>{{ item.nome }}</b>
                         </div>
                     </li>
             </div>
-            <hr class="offset1" />
+            <hr class="offset1 span7" />
         {% endfor %}
     </div>
     
@@ -55,8 +60,8 @@
     
     <form method="post" action="" class=".form-vertical">
         <h3>Adicione Itens:</h3><br />
-        <textarea name="itens" class="focused"></textarea><br />
-        <input type="submit" name="adiciona_itens" class="btn btn-primary" value="Adicionar" />
+        <textarea name="novos_itens" class="focused"></textarea><br />
+        <input type="submit" id="adiciona_itens" name="adiciona_itens" class="btn btn-primary btn-large" value="Adicionar" />
     </form>
 
 
