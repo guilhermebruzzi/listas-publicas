@@ -19,11 +19,11 @@ class ListaModel:
     
     def __get_listas_slugs__(self):
         """ Retorna todas as listas no BD """
-        select_lista = self.lista_table.select()
+        select_lista = select([self.lista_table.c.slug])
         listas_result = self.__get_result__(select_lista)
         slugs = []
         for lista in listas_result:
-            slug = lista[2]
+            slug = lista[0]
             slugs.append(slug)
         return slugs
     
@@ -52,7 +52,7 @@ class ListaModel:
         return itens
     
     def __get_nome_lista__(self, slug_lista):
-        nome_lista = slug_lista.split("/")[-1]
+        nome_lista = slug_lista.split("/")[-2]
         nome_lista = " ".join( nome_lista.split("-") ) # Exemplo: aniversario-guilherme-2012 vira aniversario guilherme 2012
         nome_lista = string.capwords(nome_lista) # Exemplo: aniversario guilherme 2012 vira Aniversario Guilherme 2012
         return nome_lista
@@ -71,10 +71,10 @@ class ListaModel:
     def __get_lista_pai__(self, slug_lista, slugs_BD):
         """ Verifica se a lista pai já existe no banco e se não existir cria ela a retorna """
         
-        slug_pai_list = slug_lista.split("/")[0:-1]
-        slug_pai = "/".join(slug_pai_list)
+        slug_pai_list = slug_lista.split("/")[0:-2] # O final de toda a lista termina com uma barra: / Então deve ignorar o último elemento
+        slug_pai = "/".join(slug_pai_list) + "/" # Coloca uma barra no final do slug, para ser um slug válido
         
-        if slug_pai == "": # Não se cria uma lista pai se a lista está sendo adicionada na Raiz
+        if slug_pai == "" or slug_pai == "/": # Não se cria uma lista pai se a lista está sendo adicionada na Raiz
             return None
         
         if slug_pai not in slugs_BD: # Se a lista não existe

@@ -25,6 +25,20 @@ class ListasHandler(tornado.web.RequestHandler):
         if not slug.endswith("/"):
             slug = slug + "/"
         return slug
+        
+    def __get_slugs__(self, slug_lista):
+        """ Retorna o slug atual (última parte) e uma lista com o slug e o href para cada pai do slug atual """
+        slugs_pais = []
+        href = "/listas-publicas/"
+        slugs = slug_lista.split("/")
+        slug_atual = slugs[-2] + "/"
+        slug_pai_list = slugs[0:-2]
+        for slug in slug_pai_list:
+            slug += "/"
+            href += slug
+            slugs_pais.append({"href": href, "slug": slug})
+        
+        return (slug_atual, slugs_pais)
 
     def get_lista_info(self, slug_lista):
         """ Com o slug da lista, acha todas as informacoes da lista, assim como as suas sublistas e os seus itens """
@@ -37,7 +51,8 @@ class ListasHandler(tornado.web.RequestHandler):
     def call_template_listas(self, lista, sublistas, itens):
         nome_lista = lista["nome"]
         title = "Lista de " + nome_lista
-        options = {"title": title, "itens": itens, "sublistas": sublistas,
+        slug_atual, slugs_pais = self.__get_slugs__(lista["slug"])
+        options = {"title": title, "itens": itens, "sublistas": sublistas, "slug_atual": slug_atual, "slugs_pais": slugs_pais,
                     "opcao_deleta_todos_os_itens": self.opcao_deleta_todos_os_itens,
                     "opcao_deleta_a_lista": self.opcao_deleta_a_lista,
                     "opcao_deleta_um_item": self.opcao_deleta_um_item,

@@ -32,11 +32,14 @@
           </a>
           <a class="brand" href="/listas-publicas/">
             <img id="icone-principal" src="/listas-publicas/img/icone-principal.png" />
-            <span id="titulo-principal">Listas Públicas</span>
+            <span id="titulo-principal">Listas Públicas/</span>
           </a>
           <div class="nav-collapse">
             <ul class="nav">
-              <li class="active"><a href="">{{ title }}</a></li>
+                {% for slug_pai in slugs_pais %}
+                    <li><a href="{{ slug_pai.href }}">{{ slug_pai.slug }}</a></li>
+                {% endfor %}
+                <li class="active"><a href="">{{ slug_atual }}</a></li>
             </ul>
           </div>
         </div>
