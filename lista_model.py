@@ -107,4 +107,12 @@ class ListaModel:
         
         insert_itens = self.item_table.insert()
         insert_itens.execute(novos_itens)
+    
+    def altera_item(self, item_id, novo_valor):
+        altera_item = self.item_table.update().where(self.item_table.c.id == item_id).values(nome=novo_valor)
+        return altera_item.execute()
+                
+    def deleta_item(self, item_id):
+        delete_item = self.item_table.delete(self.item_table.c.id == item_id)
+        return delete_item.execute()
 

@@ -11,13 +11,13 @@ from lista_model import ListaModel
 class ListasHandler(tornado.web.RequestHandler):
     def initialize(self):
         self.lista_model = ListaModel()
-        self.opcao_edita_a_lista = "/listas-publicas-edita-a-lista/"
-        self.opcao_edita_um_item = "/listas-publicas-edita-um-item/"
-        self.opcao_edita_um_item_regex = r"/listas-publicas-edita-um-item/([0-9]+)"
-        self.opcao_deleta_todos_os_itens = "/listas-publicas-deleta-todos-os-itens/"
-        self.opcao_deleta_a_lista = "/listas-publicas-deleta-a-lista/"
-        self.opcao_deleta_um_item = "/listas-publicas-deleta-um-item/"
-        self.opcao_deleta_um_item_regex = r"/listas-publicas-deleta-um-item/([0-9]+)"
+        self.opcao_edita_a_lista = "listas-publicas-edita-a-lista/"
+        self.opcao_edita_um_item = "listas-publicas-edita-um-item/"
+        self.opcao_edita_um_item_regex = r"/listas-publicas-edita-um-item/([0-9]+)/$"
+        self.opcao_deleta_todos_os_itens = "listas-publicas-deleta-todos-os-itens/"
+        self.opcao_deleta_a_lista = "listas-publicas-deleta-a-lista/"
+        self.opcao_deleta_um_item = "listas-publicas-deleta-um-item/"
+        self.opcao_deleta_um_item_regex = r"/listas-publicas-deleta-um-item/([0-9]+)/$"
 
     def __get_slug__(self, slug):
         while slug.count("//") > 0:
@@ -52,7 +52,7 @@ class ListasHandler(tornado.web.RequestHandler):
         nome_lista = lista["nome"]
         title = "Lista de " + nome_lista
         slug_atual, slugs_pais = self.__get_slugs__(lista["slug"])
-        options = {"title": title, "itens": itens, "sublistas": sublistas, "slug_atual": slug_atual, "slugs_pais": slugs_pais,
+        options = {"title": title, "lista": lista, "itens": itens, "sublistas": sublistas, "slug_atual": slug_atual, "slugs_pais": slugs_pais,
                     "opcao_deleta_todos_os_itens": self.opcao_deleta_todos_os_itens,
                     "opcao_deleta_a_lista": self.opcao_deleta_a_lista,
                     "opcao_deleta_um_item": self.opcao_deleta_um_item,
@@ -97,8 +97,27 @@ class ListasHandler(tornado.web.RequestHandler):
         else:
             raise tornado.web.HTTPError(404) # Não se adiciona itens numa lista inexistente
             
+    def put(self, slug_lista):
+        """ Quando a página listas-publicas/slug_lista pedir para editar listas/itens """
+        
+        print "Put: %s" % slug_lista
+            
+        if slug_lista.endswith(self.opcao_edita_a_lista):
+            pass
+        
+        m_obj = re.search(self.opcao_edita_um_item_regex, slug_lista)
+        if m_obj:
+            item_id = int(m_obj.group(1))
+            novo_valor = self.get_argument("novo_valor")
+            self.lista_model.altera_item(item_id, novo_valor)
+            slug_lista = slug_lista.replace("%s%d/" % (self.opcao_edita_um_item, item_id), "")
+            
+        self.redirect('/listas-publicas/' + slug_lista) # Vai pro GET
+            
     def delete(self, slug_lista):
-        """ Quando a página listas-publicas/slug_lista pedir para inserir novos itens """
+        """ Quando a página listas-publicas/slug_lista pedir para deletar listas/itens """
+        
+        print "Delete: %s" % slug_lista
         
         if slug_lista.endswith(self.opcao_deleta_todos_os_itens):
             pass
@@ -108,7 +127,12 @@ class ListasHandler(tornado.web.RequestHandler):
             
         m_obj = re.search(self.opcao_deleta_um_item_regex, slug_lista)
         if m_obj:
-            id = int(m_obj.group(1))
+            item_id = int(m_obj.group(1))
+            self.lista_model.deleta_item(item_id)
+            slug_lista = slug_lista.replace("%s%d/" % (self.opcao_deleta_um_item, item_id), "")
+            
+        self.redirect('/listas-publicas/' + slug_lista) # Vai pro GET
+            
         
 STATIC_PATH = os.path.abspath(os.path.dirname(__file__))
 routes_listas_publicas = [
