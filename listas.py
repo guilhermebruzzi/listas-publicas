@@ -141,3 +141,11 @@ routes_listas_publicas = [
     (r"/listas-publicas/img/(.*)", StaticFileHandler, {"path": STATIC_PATH + "/img/"}),
     (r"/listas-publicas/(.*)", ListasHandler)
 ]
+
+if __name__ == "__main__":
+    porta = 8888
+    application = tornado.web.Application(routes_listas_publicas)
+    application.listen(porta)
+    print "Aplicacao na porta %d" % porta
+    tornado.ioloop.IOLoop.instance().start()
+    
