@@ -37,11 +37,35 @@ h1, h2, h3, h4, h5, legend{
     color: @color-azul-escuro;
 }
 
+/* Home */
+
+.home-p{
+	font-size: 16px;
+    margin: 0 0 16px;
+}
+
+.adicionar-nova-lista{
+	margin-bottom: 10px;
+}
+
+/* Lista */
+
+#lista-body{
+	h1{
+		float: left;
+	}
+	.lista-opcoes{
+		margin-top: 9px;
+		b{ /*Barra entre as opcões*/
+			color: @color-azul-escuro;
+		}
+	}
+}
+
 /* Formulário */
 
-fieldset{
-    height: 400px;
-    width: 400px;
+.bloco-pagina-lista{
+	margin-top: 50px;
 }
 
 textarea{
@@ -82,16 +106,24 @@ textarea{
 }
 
 
+/*Para botoes de PUT e DELETE funcionarem bem com o layout*/
+.form-put, .form-delete{
+    display: inline;
+}
+
+.edita_item, .edita_lista, .cancela-edicao{
+	position: relative;
+	left: 2px;
+	top: -5px;
+}
+
 /* Itens */
 
 #itens{
     position: relative;
-    
+
     li{
         display: block;
-    
-        .item-body{
-        }
         
         .item-opcoes{
             float: right;
@@ -99,18 +131,9 @@ textarea{
                 color: @color-azul-escuro;
             }
         }
-        
-        .form-put, .form-delete{
-            display: inline;
-        }
-        
+
         .form-put{
             margin-bottom: -5px;
-            .btn{
-                position: relative;
-                left: 2px;
-                top: -5px;
-            }
         }
     }
     hr{

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+	<p class="home-p">
+		Esse site serve para criar rapidamente listas de itens, facilmente compartilhaveis.
+	</p>
+	
+	<p class="home-p">
+		Digite na url quantas combinações você quiser de: /lista/sublista1/sublista2
+	</p>
+	<p class="home-p">
+		E depois adicione, altere e delete itens utilizando um formulário intuitivo.
+	</p>
+	<p class="home-p">
+		Para criar ainda mais rapidamente a sua primeira lista, utilize o formulário abaixo:
+	</p>
+	
+	<form class="form-adicionar-nova-lista">
+		<fieldset>
+			<legend>Preencha o campo com o nome da sua lista</legend>
+			<input type="text" class="nova-lista" />
+			<input type="button" class="btn btn-primary btn-small adicionar-nova-lista" value="Cria Lista" />
+		</fieldset>
+	</form>
+
+</div>
+
+{% endblock %}
+{% block js %}<script src="/js/listas.js" type="text/javascript"></script>{% endblock %}

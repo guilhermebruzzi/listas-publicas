@@ -5,12 +5,30 @@
 {% block content %}
 
 <div class="container">
-    <h1> {{ title }} </h1>
 
-    <br />
+	<div id="lista-body">
+		<h1> {{ lista.nome }} </h1>
+		<div class="lista-opcoes span2">
+			<a class="editar" alt="Alterar lista" title="Alterar lista" href="#"><i class="icon-edit icon-white"></i></a>
+			<b>&nbsp;/&nbsp;</b>
+			<form class="form-delete" method="DELETE"
+				action="/{{ lista.slug }}{{ opcao_deleta_a_lista }}">
+					<a class="deleta_a_lista botao-submit" alt="Deletar lista" title="Deletar lista" href="#"><i class="icon-remove icon-white"></i></a>
+			</form>
+		</div>
+	</div>
+	
+	<div class="lista-editar-template">
+        <form class="form-put" method="PUT" action="/{{ lista.slug }}{{ opcao_edita_a_lista}}">
+            <i class="icon-chevron-right icon-white"></i> &nbsp;
+            <input type="text" class="novo_valor" name="novo_valor" value="{{ lista.nome }}" />
+            <input type="button" class="btn btn-primary btn-small edita_lista botao-submit" value="Editar" />
+            <input type="button" class="btn btn-primary btn-small cancela-edicao" value="Cancelar" />
+        </form>
+    </div>
 
-    <div id="sublistas">
-        <h3>Sub-Listas:</h3><br />
+    <div id="sublistas" class="bloco-pagina-lista">
+        <h3>Sub-listas:</h3>
         {% for sublista in sublistas %}
             <div class="row">
                 {% if (loop.index % 2) == 0 %}
@@ -21,30 +39,41 @@
                         <div class="sublista-body span6">
                             <i class="icon-chevron-right icon-white"></i>
                             &nbsp;
-                            <b><a href="/listas-publicas/{{ sublista.slug }}">{{ sublista.nome }}</a></b>
+                            <b><a href="/{{ sublista.slug }}">{{ sublista.nome }}</a></b>
                         </div>
                     </li>
             </div>
             <hr class="offset1 span5" />
         {% endfor %}
+        
+        <br />
+        
+        <form class="form-adicionar-nova-lista offset1">
+			<fieldset>
+				<input type="text" class="nova-lista" />
+				<input type="button" class="btn btn-primary btn-small adicionar-nova-lista" value="Criar Sub-lista" />
+			</fieldset>
+		</form>
     </div>
-    
-    <br />
 
-    <div id="itens">
-        <h3>Itens:</h3><br />
+    <div id="itens" class="bloco-pagina-lista">
+        <h3>Itens:</h3>
+        
+		<br />
+        
         {% for item in itens %}
-            <div class="row">
+            <div id="row-item-{{ item.id }}" class="row">
                 {% if (loop.index % 2) == 0 %}
                     <li id="item{{ item.id }}" class="par offset1 span8">
                 {% else %}
                     <li id="item{{ item.id }}" class="offset1 span8">
                 {% endif %}
                         <div id="item-opcoes{{ item.id }}" class="item-opcoes span2">
-                            <a class="editar" href="#"><i class="icon-edit icon-white"></i></a>
+                            <a class="editar" alt="Alterar item" title="Alterar item" href="#"><i class="icon-edit icon-white"></i></a>
                             <b>&nbsp;/&nbsp;</b>
-                            <form class="form-delete" method=DELETE action="/listas-publicas/{{ lista.slug }}{{ opcao_deleta_um_item }}{{ item.id }}/">
-                                <a class="excluir" href="#"><i class="icon-remove icon-white"></i></a>
+                            <form class="form-delete form-delete-um-item" method="DELETE"
+								action="/{{ lista.slug }}{{ opcao_deleta_um_item }}{{ item.id }}/">
+									<a id="deleta-item-{{ item.id }}" class="botao-submit excluir" alt="Deletar item" title="Deletar item" href="#"><i class="icon-remove icon-white"></i></a>
                             </form>
                         </div>
                         <div class="item-body span5">
@@ -52,22 +81,27 @@
                             <b>{{ item.nome }}</b>
                         </div>
                         <div class="item-editar-template span5">
-                            <form class="form-put" method=PUT action="/listas-publicas/{{ lista.slug }}{{ opcao_edita_um_item }}{{ item.id }}/">
+                            <form class="form-put" method="PUT" action="/{{ lista.slug }}{{ opcao_edita_um_item }}{{ item.id }}/">
                                 <i class="icon-chevron-right icon-white"></i> &nbsp;
                                 <input type="text" class="novo_valor" name="novo_valor" value="{{ item.nome }}" />
-                                <input type="submit" name="edita_item" class="btn btn-primary btn-small" value="Editar" />
-                                <input type="button"class="btn btn-primary btn-small cancela-edicao" value="Cancelar" />
+                                <input type="button" class="btn btn-primary btn-small edita_item botao-submit" value="Editar" />
+                                <input type="button" class="btn btn-primary btn-small cancela-edicao" value="Cancelar" />
                             </form>
                         </div>
                     </li>
             </div>
             <hr class="offset1 span7" />
         {% endfor %}
+        
+        <br />
+        
+        <form class="form-delete form-delete-todos-itens offset1" method="DELETE" 
+			action="/{{ lista.slug }}{{ opcao_deleta_todos_os_itens }}">
+				<input type="button" class="btn btn-primary btn-small deleta_todos_os_itens botao-submit" value="Deletar todos os itens" />
+		</form>
     </div>
     
-    <br />
-    
-    <form method="post" action="" class=".form-vertical">
+    <form method="post" action="" class="form-vertical form-adicionar-itens bloco-pagina-lista">
         <h3>Adicione Itens:</h3><br />
         <textarea name="novos_itens" class="focused"></textarea><br />
         <input type="submit" id="adiciona_itens" name="adiciona_itens" class="btn btn-primary btn-large" value="Adicionar" />
@@ -77,4 +111,4 @@
 </div>
 
 {% endblock %}
-{% block js %}<script src="/listas-publicas/js/listas.js" type="text/javascript"></script>{% endblock %}
+{% block js %}<script src="/js/listas.js" type="text/javascript"></script>{% endblock %}

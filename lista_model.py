@@ -90,23 +90,36 @@ class ListaModel:
         
         lista_pai = self.__get_lista_pai__(slug_lista, slugs_BD)
         self.__insere_nova_lista__(slug_lista, lista_pai)
+        
+    def altera_nome_lista(self, lista_id, novo_valor):
+        altera_lista = self.lista_table.update().where(self.lista_table.c.id == lista_id).values(nome=novo_valor)
+        return altera_lista.execute()
+    
+    def deleta_lista(self, lista_id):
+        delete_lista = self.lista_table.delete(self.lista_table.c.id == lista_id)
+        return delete_lista.execute()
     
     def __eh_url_valida__(self, url):
         url_regex = r"^(http[s]?://|ftp://)?(www\.)?[a-zA-Z0-9-\.]+\.(com|org|net|mil|edu|ca|co.uk|com.au|gov|br)$"
         m_obj = re.search(url_regex, url)
         return True if m_obj else False
-    
+
     def add_itens(self, novos_itens_nomes, lista_id):
-        novos_itens = []
-        for nome in novos_itens_nomes:
-            nome = nome.strip()
-            if self.__eh_url_valida__(nome):
-                nome = "<a href='%s'>%s</a>" % (nome, nome)
-            if nome != "":
-                novos_itens.append({"nome": nome, "lista_id": lista_id})
+		novos_itens_nomes = set(novos_itens_nomes)
+		novos_itens = []
+		for nome in novos_itens_nomes:
+			nome = nome.strip()
+			if self.__eh_url_valida__(nome):
+				nome = "<a href='%s'>%s</a>" % (nome, nome)
+			if nome != "":
+				novos_itens.append({"nome": nome, "lista_id": lista_id})
+
+		insert_itens = self.item_table.insert()
+		insert_itens.execute(novos_itens)
         
-        insert_itens = self.item_table.insert()
-        insert_itens.execute(novos_itens)
+    def deleta_todos_itens_da_lista(self, lista_id):
+        delete_item = self.item_table.delete(self.item_table.c.lista_id == lista_id)
+        return delete_item.execute()
     
     def altera_item(self, item_id, novo_valor):
         altera_item = self.item_table.update().where(self.item_table.c.id == item_id).values(nome=novo_valor)

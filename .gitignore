@@ -1,4 +1,6 @@
 *.pyc
+*.geany
 .project
 .pydevproject
 .settings
+.gitignore~
