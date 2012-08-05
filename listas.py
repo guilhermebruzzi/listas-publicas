@@ -92,10 +92,10 @@ class ListasHandler(tornado.web.RequestHandler):
         if lista:
             # Adiciona novos itens a lista
             lista_id = lista["id"]
-            novos_itens = self.get_argument("novos_itens")
-            novos_itens = novos_itens.split("\n")
-            self.lista_model.add_itens(novos_itens, lista_id)
-
+            novos_itens_nomes = self.get_argument("novos_itens")
+            novos_itens_nomes = novos_itens_nomes.split("\n")
+            atuais_itens_nomes = [item["nome"] for item in itens]
+            self.lista_model.add_itens(atuais_itens_nomes, novos_itens_nomes, lista_id)
             self.redirect('/' + slug_lista) # Vai pro GET
         else:
             raise tornado.web.HTTPError(404) # Não se adiciona itens numa lista inexistente

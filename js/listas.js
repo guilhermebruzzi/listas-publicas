@@ -1,18 +1,20 @@
 function append_on_current_url(nova_parte){
 	var url = window.location.href;
+	var url_hash = "#" + window.location.hash.substring(1);
+	url = url.replace(url_hash, "");
 	var url_parts = url.split("/"); 
 	var nova_parte_parts = nova_parte.split("/");
 	url_parts = url_parts.concat(nova_parte_parts);
 	var new_url = "";
 	for (part_index in url_parts){
 		var part = url_parts[part_index];
-		if(part != "" && part != ".." && part[0] != "#"){
+		if(part != "" && part != ".."){
 			new_url += part + "/";
 		}
 		if(part == "http:" || part == "https:"){
 			new_url += "/";
 		}
-		if(part == ".." || part[0] == '#'){
+		if(part == ".."){
 			new_url = new_url.split("/").slice(0,-2).join("/") + "/";
 		}
 	}
@@ -37,6 +39,10 @@ $(document).ready(function(){
 		adicionar_nova_lista($(this));
 		return false;
 	});
+    
+    /*home.html*/
+    
+    $(".server").html(window.location.href);
 	
 	/*listas.html*/
 	
@@ -120,10 +126,12 @@ $(document).ready(function(){
 	});
     
     $("#lista-body .form-delete .botao-submit").on("click", function(){
-		var form_enclosing = $(this).parent();
-		call_form_action(form_enclosing, function(result){
-			window.location.href = append_on_current_url("../"); // Vai pra url pai
-		});
+        if(confirm("Tem certeza que deseja deletar essa lista?")){
+            var form_enclosing = $(this).parent();
+            call_form_action(form_enclosing, function(result){
+                window.location.href = append_on_current_url("../"); // Vai pra url pai
+            });
+        }
 	});
     
     $("#itens .form-delete-todos-itens .botao-submit").on("click", function(){

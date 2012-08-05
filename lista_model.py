@@ -17,9 +17,11 @@ class ListaModel:
             return rs.fetchone()
         return rs.fetchall()
     
-    def __get_listas_slugs__(self):
+    def __get_listas_pai_slugs__(self, inicio_das_listas_pai):
         """ Retorna todas as listas no BD """
-        select_lista = select([self.lista_table.c.slug])
+        filtro_pelo_pai = self.lista_table.c.slug.like(inicio_das_listas_pai + '%')
+        select_lista = select(columns=[self.lista_table.c.slug], whereclause=filtro_pelo_pai)
+        
         listas_result = self.__get_result__(select_lista)
         slugs = []
         for lista in listas_result:
@@ -86,7 +88,8 @@ class ListaModel:
     def cria_nova_lista(self, slug_lista):
         """ Insere uma lista na qual já se sabe o slug, porém a sua lista pai pode não ter sido criada ainda"""
         
-        slugs_BD = self.__get_listas_slugs__() # Recebe todos os slugs do BD, para ser mais rápido de criar novas listas
+        primeiro_pai = slug_lista.split("/")[0]
+        slugs_BD = self.__get_listas_pai_slugs__(primeiro_pai) # Recebe todos os slugs do BD, para ser mais rápido de criar novas listas
         
         lista_pai = self.__get_lista_pai__(slug_lista, slugs_BD)
         self.__insere_nova_lista__(slug_lista, lista_pai)
@@ -100,19 +103,19 @@ class ListaModel:
         return delete_lista.execute()
     
     def __eh_url_valida__(self, url):
-        url_regex = r"^(http[s]?://|ftp://)?(www\.)?[a-zA-Z0-9-\.]+\.(com|org|net|mil|edu|ca|co.uk|com.au|gov|br)$"
+        url_regex = r"^(http[s]?://|ftp://)?(www\.)?[a-zA-Z0-9-\.]+\.(com|org|net|mil|edu|ca|co.uk|com.au|gov|br)[a-zA-Z0-9-\.\/]*$"
         m_obj = re.search(url_regex, url)
         return True if m_obj else False
 
-    def add_itens(self, novos_itens_nomes, lista_id):
-		novos_itens_nomes = set(novos_itens_nomes)
+    def add_itens(self, atuais_itens_nomes, novos_itens_nomes, lista_id):
 		novos_itens = []
 		for nome in novos_itens_nomes:
 			nome = nome.strip()
 			if self.__eh_url_valida__(nome):
 				nome = "<a href='%s'>%s</a>" % (nome, nome)
-			if nome != "":
+			if nome != "" and nome not in atuais_itens_nomes:
 				novos_itens.append({"nome": nome, "lista_id": lista_id})
+				atuais_itens_nomes.append(nome)
 
 		insert_itens = self.item_table.insert()
 		insert_itens.execute(novos_itens)

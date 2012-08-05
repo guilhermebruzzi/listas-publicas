@@ -32,19 +32,10 @@ CREATE TABLE `item` (
   PRIMARY KEY (`id`),
   KEY `fk_item_lista_idx` (`lista_id`),
   KEY `fk_item_pai_idx` (`item_pai`),
-  CONSTRAINT `fk_item_pai` FOREIGN KEY (`item_pai`) REFERENCES `item` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_item_lista` FOREIGN KEY (`lista_id`) REFERENCES `lista` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  CONSTRAINT `fk_item_lista` FOREIGN KEY (`lista_id`) REFERENCES `lista` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_item_pai` FOREIGN KEY (`item_pai`) REFERENCES `item` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `item`
---
-
-LOCK TABLES `item` WRITE;
-/*!40000 ALTER TABLE `item` DISABLE KEYS */;
-/*!40000 ALTER TABLE `item` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `lista`
@@ -56,22 +47,14 @@ DROP TABLE IF EXISTS `lista`;
 CREATE TABLE `lista` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nome` varchar(255) NOT NULL,
-  `slug` text NOT NULL,
+  `slug` varchar(1024) NOT NULL,
   `lista_pai` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_lista_1_idx` (`lista_pai`),
+  KEY `slug_lista_idx` (`slug`(255)),
   CONSTRAINT `fk_lista_pai` FOREIGN KEY (`lista_pai`) REFERENCES `lista` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `lista`
---
-
-LOCK TABLES `lista` WRITE;
-/*!40000 ALTER TABLE `lista` DISABLE KEYS */;
-/*!40000 ALTER TABLE `lista` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -82,4 +65,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-08-02  1:10:31
+-- Dump completed on 2012-08-04 21:20:39
