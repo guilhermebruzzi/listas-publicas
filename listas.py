@@ -156,9 +156,10 @@ routes_listas_publicas = [
     (r"/?", HomeHandler)
 ]
 
+application = tornado.web.Application(routes_listas_publicas)
+
 if __name__ == "__main__":
     porta = 8888
-    application = tornado.web.Application(routes_listas_publicas)
     application.listen(porta)
     print "Aplicacao na porta %d" % porta
     tornado.ioloop.IOLoop.instance().start()

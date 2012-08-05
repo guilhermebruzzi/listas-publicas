@@ -18,5 +18,8 @@ clean:
 	@find . -type f -name "*.pyc" -exec rm -rf {} \;
 
 run: clean
+	@foreman start
+
+simple_run: clean
 	@python ${root_dir}/listas.py
 
