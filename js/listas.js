@@ -42,7 +42,12 @@ $(document).ready(function(){
     
     /*home.html*/
     
-    $(".server").html(window.location.href);
+    $(".link-with-server").each(function(){
+        var servidor = window.location.href;
+        var link_to = servidor + $(this).html();
+        $(this).attr("href", link_to);
+        $(this).html(link_to);
+    });
 	
 	/*listas.html*/
 	

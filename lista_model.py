@@ -1,4 +1,4 @@
-# -- coding: UTF-8 --
+﻿#-*- coding:utf-8 -*-
 
 import os
 import re
@@ -7,7 +7,11 @@ from sqlalchemy import *
 
 class ListaModel:
     def __init__(self):
-        db_config = os.environ['DATABASE_URL']
+        if os.environ.has_key("DATABASE_URL"):
+            db_config = os.environ['DATABASE_URL']
+        else:
+            db_config = 'mysql://root:@localhost/listas_publicas?charset=utf8'
+
         db = create_engine(db_config)
         metadata = MetaData(db)
         self.lista_table = Table('lista', metadata, autoload=True)
