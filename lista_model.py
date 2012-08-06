@@ -1,12 +1,14 @@
 # -- coding: UTF-8 --
 
+import os
 import re
 import string
 from sqlalchemy import *
 
 class ListaModel:
     def __init__(self):
-        db = create_engine('mysql://root:@localhost/listas_publicas')
+        db_config = os.environ['DATABASE_URL']
+        db = create_engine(db_config)
         metadata = MetaData(db)
         self.lista_table = Table('lista', metadata, autoload=True)
         self.item_table = Table('item', metadata, autoload=True)
