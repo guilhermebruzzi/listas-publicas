@@ -43,7 +43,7 @@ CREATE TABLE `item` (
 
 LOCK TABLES `item` WRITE;
 /*!40000 ALTER TABLE `item` DISABLE KEYS */;
-INSERT INTO `item` VALUES (1,'Bruzzi',1,NULL),(2,'Furby',1,NULL),(3,'Guilherme',1,NULL),(4,'Namorada',1,NULL);
+INSERT INTO `item` VALUES (1,'Bruzzi',3,NULL),(2,'Furby',3,NULL),(3,'Guilherme',3,NULL),(4,'Namorada',3,NULL);
 /*!40000 ALTER TABLE `item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -72,7 +72,7 @@ CREATE TABLE `lista` (
 
 LOCK TABLES `lista` WRITE;
 /*!40000 ALTER TABLE `lista` DISABLE KEYS */;
-INSERT INTO `lista` VALUES (1,'Listas do Bruzzi','bruzzi/',NULL),(2,'Listas de aniversario do Bruzzi','bruzzi/aniversarios/',NULL),(3,'Listas de aniversario do Bruzzi - 2012','bruzzi/aniversarios/2012/',NULL);
+INSERT INTO `lista` VALUES (1,'Listas do Bruzzi','bruzzi/',NULL),(2,'Listas de aniversario do Bruzzi','bruzzi/aniversarios/',1),(3,'Listas de aniversario do Bruzzi - 2012','bruzzi/aniversarios/2012/',2);
 /*!40000 ALTER TABLE `lista` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
