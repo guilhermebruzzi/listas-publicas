@@ -1,19 +1,32 @@
 ﻿#-*- coding:utf-8 -*-
 
+import sys
 import os
 import re
 import string
 from sqlalchemy import *
 
-class ListaModel:
-    def __init__(self):
+def get_engine():
+    module = sys.modules[__name__]
+    if hasattr(module, "engine"):
+        engine = getattr(module, "engine")
+    else:
         if os.environ.has_key("DATABASE_URL"):
             db_config = os.environ['DATABASE_URL']
         else:
             db_config = 'mysql://root:@localhost/listas_publicas?charset=utf8'
 
-        db = create_engine(db_config)
-        metadata = MetaData(db)
+        engine = create_engine(db_config)
+        setattr(module, "engine", engine)
+        
+    return engine
+        
+
+
+class ListaModel:
+    def __init__(self):
+        engine = get_engine()
+        metadata = MetaData(engine)
         self.lista_table = Table('lista', metadata, autoload=True)
         self.item_table = Table('item', metadata, autoload=True)
     
