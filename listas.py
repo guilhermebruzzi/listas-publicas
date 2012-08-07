@@ -20,8 +20,11 @@ class ListasHandler(tornado.web.RequestHandler):
 		self.opcao_deleta_um_item_regex = r"/listas-publicas-deleta-um-item/([0-9]+)/$"
 
 	def __get_slug__(self, slug):
-		while slug.count("//") > 0:
+		while slug.count("//") > 0 and slug.count("  ") > 0:
 			slug = slug.replace("//", "/")
+			slug = slug.replace("  ", " ")
+		slug = slug.replace(" ", "-")
+		slug = slug.lower()
 		if not slug.endswith("/"):
 			slug = slug + "/"
 		return slug
@@ -66,26 +69,30 @@ class ListasHandler(tornado.web.RequestHandler):
 		self.write(result)
 
 	def get(self, slug_lista):
-		""" Quando a página slug_lista carregar """
+		""" Quando a página /slug_lista carregar """
 
 		if slug_lista == "":
 			raise tornado.web.HTTPError(404) # Listas não podem vir com o nome vazio
-		else: 
-			lista, sublistas, itens, slug_lista = self.get_lista_info(slug_lista)
-			
-			if lista:
-				#Chama o templa listas.html que mostra o nome da lista, suas sublistas e os seus itens
-				self.call_template_listas(lista, sublistas, itens)
-			else:
-				#Adiciona a nova lista
-				self.lista_model.cria_nova_lista(slug_lista)
-				
-				#Chama o templa listas.html que mostra o nome da lista, suas sublistas e os seus itens
+		else:
+			slug_lista_real = self.__get_slug__(slug_lista)
+			if slug_lista_real != slug_lista:
+				self.redirect('/' + slug_lista_real) # Vai pro GET com o slug correto
+			else:				
 				lista, sublistas, itens, slug_lista = self.get_lista_info(slug_lista)
-				self.call_template_listas(lista, sublistas, itens)
+				
+				if lista:
+					#Chama o templa listas.html que mostra o nome da lista, suas sublistas e os seus itens
+					self.call_template_listas(lista, sublistas, itens)
+				else:
+					#Adiciona a nova lista
+					self.lista_model.cria_nova_lista(slug_lista)
+					
+					#Chama o templa listas.html que mostra o nome da lista, suas sublistas e os seus itens
+					lista, sublistas, itens, slug_lista = self.get_lista_info(slug_lista)
+					self.call_template_listas(lista, sublistas, itens)
 
 	def post(self, slug_lista):
-		""" Quando a página slug_lista pedir para inserir novos itens """
+		""" Quando a página /slug_lista pedir para inserir novos itens """
 
 		lista, sublistas, itens, slug_lista = self.get_lista_info(slug_lista)
 
@@ -102,7 +109,7 @@ class ListasHandler(tornado.web.RequestHandler):
 
 
 	def put(self, slug_lista):
-		""" Quando a página slug_lista pedir para editar listas/itens """
+		""" Quando a página /slug_lista pedir para editar listas/itens """
 
 		if slug_lista.endswith(self.opcao_edita_a_lista):
 			slug_lista = slug_lista.replace(self.opcao_edita_a_lista, "")
@@ -119,7 +126,7 @@ class ListasHandler(tornado.web.RequestHandler):
 				raise tornado.web.HTTPError(404)
 
 	def delete(self, slug_lista):
-		""" Quando a página slug_lista pedir para deletar listas/itens """
+		""" Quando a página /slug_lista pedir para deletar listas/itens """
 		
 		if slug_lista.endswith(self.opcao_deleta_todos_os_itens):
 			slug_lista = slug_lista.replace(self.opcao_deleta_todos_os_itens, "")
