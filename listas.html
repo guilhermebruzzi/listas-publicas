@@ -56,56 +56,74 @@
 		</form>
     </div>
 
+    <br />
+
     <div id="itens" class="bloco-pagina-lista">
-        <h3>Itens:</h3>
-        
-		<br />
-        
-        {% for item in itens %}
-            <div id="row-item-{{ item.id }}" class="row">
-                {% if (loop.index % 2) == 0 %}
-                    <li id="item{{ item.id }}" class="par offset1 span8">
-                {% else %}
-                    <li id="item{{ item.id }}" class="offset1 span8">
-                {% endif %}
-                        <div id="item-opcoes{{ item.id }}" class="item-opcoes span2">
-                            <a class="editar" alt="Alterar item" title="Alterar item" href="#"><i class="icon-edit icon-white"></i></a>
-                            <b>&nbsp;/&nbsp;</b>
-                            <form class="form-delete form-delete-um-item" method="DELETE"
-								action="/{{ lista.slug }}{{ opcao_deleta_um_item }}{{ item.id }}/">
-									<a id="deleta-item-{{ item.id }}" class="botao-submit excluir" alt="Deletar item" title="Deletar item" href="#"><i class="icon-remove icon-white"></i></a>
-                            </form>
-                        </div>
-                        <div class="item-body span5">
-                            <i class="icon-chevron-right icon-white"></i> &nbsp;
-                            <b>{{ item.nome }}</b>
-                        </div>
-                        <div class="item-editar-template span5">
-                            <form class="form-put" method="PUT" action="/{{ lista.slug }}{{ opcao_edita_um_item }}{{ item.id }}/">
+        <h3>Nomes:</h3>
+		<div class="itens-body">
+            {% for item in itens %}
+                <div id="row-item-{{ item.id }}" class="row">
+                    {% if (loop.index % 2) == 0 %}
+                        <li id="item{{ item.id }}" class="par offset1 span8">
+                    {% else %}
+                        <li id="item{{ item.id }}" class="offset1 span8">
+                    {% endif %}
+                            <div id="item-opcoes{{ item.id }}" class="item-opcoes span2">
+                                <a class="editar" alt="Alterar nome" title="Alterar nome" href="#"><i class="icon-edit icon-white"></i></a>
+                                <b>&nbsp;/&nbsp;</b>
+                                <form class="form-delete form-delete-um-item" method="DELETE"
+                                    action="/{{ lista.slug }}{{ opcao_deleta_um_item }}{{ item.id }}/">
+                                        <a id="deleta-item-{{ item.id }}" class="botao-submit excluir" alt="Deletar nome" title="Deletar nome" href="#"><i class="icon-remove icon-white"></i></a>
+                                </form>
+                            </div>
+                            <div class="item-body span5">
                                 <i class="icon-chevron-right icon-white"></i> &nbsp;
-                                <input type="text" class="novo_valor" name="novo_valor" value="{{ item.nome }}" />
-                                <input type="button" class="btn btn-primary btn-small edita_item botao-submit" value="Editar" />
-                                <input type="button" class="btn btn-primary btn-small cancela-edicao" value="Cancelar" />
-                            </form>
-                        </div>
-                    </li>
-            </div>
-            <hr class="offset1 span7" />
-        {% endfor %}
-        
-        <br />
+                                <b>{{ item.nome }}</b>
+                            </div>
+                            <div class="item-editar-template span5">
+                                <form class="form-put" method="PUT" action="/{{ lista.slug }}{{ opcao_edita_um_item }}{{ item.id }}/">
+                                    <i class="icon-chevron-right icon-white"></i> &nbsp;
+                                    <input type="text" class="novo_valor" name="novo_valor" value="{{ item.nome }}" />
+                                    <input type="button" class="btn btn-primary btn-small edita_item botao-submit" value="Editar" />
+                                    <input type="button" class="btn btn-primary btn-small cancela-edicao" value="Cancelar" />
+                                </form>
+                            </div>
+                        </li>
+                </div>
+                <hr class="offset1 span7" />
+            {% endfor %}
+        </div>
         
         <form class="form-delete form-delete-todos-itens offset1" method="DELETE" 
 			action="/{{ lista.slug }}{{ opcao_deleta_todos_os_itens }}">
-				<input type="button" class="btn btn-primary btn-small deleta_todos_os_itens botao-submit" value="Deletar todos os itens" />
+				<input type="button" class="btn btn-primary btn-small deleta_todos_os_itens botao-submit" value="Deletar todos os nomes" />
 		</form>
     </div>
-    
+
+    <br />
+
     <form method="post" action="" class="form-vertical form-adicionar-itens bloco-pagina-lista">
-        <h3>Adicione Itens:</h3><br />
+        <h3>Adicione nomes:</h3><br />
         <textarea name="novos_itens" class="focused"></textarea><br />
         <input type="submit" id="adiciona_itens" name="adiciona_itens" class="btn btn-primary btn-large" value="Adicionar" />
     </form>
+
+    <div class="fb-eventos">
+        {% if user_events %}
+            <select>
+                {% for event in user_events%}
+                    <option value="{{ event.id }}">{{ event.name }}</option>
+                {% endfor %}
+            </select>
+            <a id="importar-nomes-evento-fb" class="btn btn-primary btn-large">Importar</a>
+        {% else %}
+            <a href="/login" class="btn btn-primary btn-large">Importe nomes de eventos seus do facebook</a>
+        {% endif %}
+    </div>
+    <div class="listaamiga-eventos">
+        <input type="text" placeholder="link para o evento no listaamiga" /><a id="importar-nomes-evento-la" class="btn btn-primary btn-large">Importar</a><br />
+        <small>Exemplo: http://listaamiga.com/sundaetracks-temporadadeverao/8680-com-brunninho-e-djapo-na-pista-2</small>
+    </div>
 
 
 </div>

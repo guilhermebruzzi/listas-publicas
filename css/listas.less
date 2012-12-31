@@ -122,23 +122,29 @@ textarea{
 #itens{
     position: relative;
 
-    li{
+    div.itens-body{
+      max-height: 400px;
+      overflow: auto;
+      margin: 30px auto;
+
+      li{
         display: block;
-        
+
         .item-opcoes{
-            float: right;
-            b{ /*Barra entre as opcões*/
-                color: @color-azul-escuro;
-            }
+          float: right;
+          b{ /*Barra entre as opcões*/
+            color: @color-azul-escuro;
+          }
         }
 
         .form-put{
-            margin-bottom: -5px;
+          margin-bottom: -5px;
         }
-    }
-    hr{
+      }
+      hr{
         margin-top: 2px;
         margin-bottom: 2px;
+      }
     }
 }
 

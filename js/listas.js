@@ -54,7 +54,7 @@ $(document).ready(function(){
 	$(".lista-editar-template").hide(); // Fica escondido até precisar dele
     $(".item-editar-template").hide(); // Ficam escondidos até precisar deles
 
-	delay_lista = 100;
+	var delay_lista = 100;
 
     $("#lista-body .editar").on("click", function(){
     	$("#lista-body").hide(delay_lista);
@@ -118,6 +118,14 @@ $(document).ready(function(){
 			sair_edicao_lista(); // Já editou, então pode sair
 		}, data);
 	});
+
+    $(".lista-editar-template .form-put .novo_valor").on("keydown", function(e){
+        if(e.which == 13){ // enter
+            e.preventDefault();
+            $(".lista-editar-template .form-put .botao-submit").click();
+            return false;
+        }
+    });
 	
 	$("#itens .form-put .botao-submit").on("click", function(){
 		var form_enclosing = $(this).parent();
@@ -129,6 +137,14 @@ $(document).ready(function(){
 			sair_edicao_item(li_enclosing); // Já editou, então pode sair
 		}, data);
 	});
+
+    $("#itens .form-put .novo_valor").on("keydown", function(e){
+        if(e.which == 13){ // enter
+            e.preventDefault();
+            $("#itens .form-put .botao-submit").click();
+            return false;
+        }
+    });
     
     $("#lista-body .form-delete .botao-submit").on("click", function(){
         if(confirm("Tem certeza que deseja deletar essa lista?")){
@@ -140,11 +156,13 @@ $(document).ready(function(){
 	});
     
     $("#itens .form-delete-todos-itens .botao-submit").on("click", function(){
-        var form_enclosing = $(this).parent();
-        call_form_action(form_enclosing, function(result){
-			$("#itens .row").remove();
-			$("#itens hr").remove();
-		});
+        if(confirm("Tem certeza que deseja deletar todos os nomes dessa lista?")){
+            var form_enclosing = $(this).parent();
+            call_form_action(form_enclosing, function(result){
+                $("#itens .row").remove();
+                $("#itens hr").remove();
+            });
+        }
     });
     
     $("#itens .form-delete-um-item .botao-submit").on("click", function(){
