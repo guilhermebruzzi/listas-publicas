@@ -3,4 +3,4 @@ Jinja2==2.6
 MySQL-python==1.2.3
 SQLAlchemy==0.7.5
 gunicorn==0.14.6
-ujson==1.18
+ujson==5.4.0
